@@ -4,12 +4,17 @@ import { CountrySelectField } from '@/components/forms/CountrySelectField'
 import FooterLink from '@/components/forms/FooterLink'
 import InputField from '@/components/forms/InputField'
 import SelectField from '@/components/forms/SelectField'
-import { INVESTMENT_GOALS, RISK_TOLERANCE_OPTIONS } from '@/lib/constants'
+import { signUpWithEmail } from '@/lib/actions/auth.actions'
+import { INVESTMENT_GOALS, PREFERRED_INDUSTRIES, RISK_TOLERANCE_OPTIONS } from '@/lib/constants'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 
 const SignUp = () => {
+
+  const router = useRouter();
 
   const { 
     register, 
@@ -18,7 +23,7 @@ const SignUp = () => {
     control
   } = useForm<SignUpFormData>({
     defaultValues: {
-      fullName: 'Shaik Munawar',
+      fullName: '',
       email: '',
       password: '',
       country: 'India',
@@ -31,11 +36,17 @@ const SignUp = () => {
 
   const onSubmit = async (data: SignUpFormData) => {
     try {
-      console.log("Form Data:", data);
-      // Add your sign-up logic here, e.g., API call to register the user
+      const result = await signUpWithEmail(data);
+      if (result) {
+        router.push('/')
+        return;
+      }
     }
     catch (error) {
-      console.error("Sign-up error:", error);
+      console.error(error);
+      toast.error("Sign-up failed", {
+        description: error instanceof Error ? error.message : "Please try again later."
+      });
     }
   }
 
@@ -103,7 +114,7 @@ const SignUp = () => {
           name="preferredIndustry"
           label="Preferred Industry"
           placeholder="Select your preferred industry"
-          options={INVESTMENT_GOALS}
+          options={PREFERRED_INDUSTRIES}
           control={control}
           error={errors.preferredIndustry}
           required
