@@ -4,8 +4,13 @@ import FooterLink from '@/components/forms/FooterLink'
 import InputField from '@/components/forms/InputField'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
+import { signInWithEmail } from '@/lib/actions/auth.actions'
 
 const SignIn = () => {
+
+  const router = useRouter();
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<SignInFormData>({
     defaultValues: {
@@ -17,14 +22,20 @@ const SignIn = () => {
 
   const onSubmit = async (data: SignInFormData) => {
     try {
-      console.log("Form Data:", data);
-      // Add your sign-in logic here, e.g., API call to authenticate the user
+      const result = await signInWithEmail(data);
+      if (result) {
+        router.push('/')
+        return;
+      }
+
     }
     catch (error) {
-      console.error("Sign-in error:", error);
+      console.error(error);
+      toast.error("Sign-in failed", {
+        description: error instanceof Error ? error.message : "Please try again later."
+      });
     }
   }
-
   return (
     <>
       <h1 className='form-title'>Sign In Your Account</h1>
@@ -51,7 +62,7 @@ const SignIn = () => {
         />
 
         <button type="submit" disabled={isSubmitting} className="yellow-btn w-full mt-5">
-          {isSubmitting ? "Signing Up..." : "Sign Up"}
+          {isSubmitting ? "Signing In..." : "Sign In"}
         </button>
 
       </form>
