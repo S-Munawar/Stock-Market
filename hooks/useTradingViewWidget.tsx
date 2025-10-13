@@ -16,7 +16,8 @@ const useTradingViewWidget = (scriptUrl: string, config: Record<string, unknown>
       script.src = scriptUrl;
       script.type = "text/javascript";
       script.async = true;
-      script.innerHTML = JSON.stringify(MARKET_OVERVIEW_WIDGET_CONFIG);
+  // Inject the specific config for this widget instance so different symbols render correctly
+  script.innerHTML = JSON.stringify(config ?? MARKET_OVERVIEW_WIDGET_CONFIG);
 
       containerRef.current.appendChild(script);
       containerRef.current.dataset.loaded = "true";
