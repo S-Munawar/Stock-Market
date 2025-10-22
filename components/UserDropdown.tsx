@@ -13,7 +13,6 @@ import {useRouter} from "next/navigation";
 import {Button} from "@/components/ui/button";
 import {LogOut} from "lucide-react";
 import NavItems from "@/components/NavItems";
-import { sign } from "crypto";
 import { signOut } from "@/lib/actions/auth.actions";
 
 

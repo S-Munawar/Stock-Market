@@ -4,15 +4,15 @@ import { cn } from '@/lib/utils'
 
 
 const InputField = ({ 
-    name, 
-    label, 
-    placeholder, 
-    type="text", 
-    register, 
-    error, 
-    validation, 
-    disabled, 
-    value 
+  name, 
+  label, 
+  placeholder, 
+  type="text", 
+  register, 
+  error, 
+  validation, 
+  disabled, 
+  value: _value
 }: FormInputProps) => {
 
   return (

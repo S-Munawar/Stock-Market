@@ -26,9 +26,9 @@ export const getAllUsersForNewsEmail = async () => {
                     usedCollection = colName;
                     break;
                 }
-            } catch (err) {
-                // ignore and try next collection name
-            }
+            } catch {
+                    // ignore and try next collection name
+                }
         }
 
         if (!rawUsers || rawUsers.length === 0) {
@@ -36,9 +36,8 @@ export const getAllUsersForNewsEmail = async () => {
             return [];
         }
 
-        // Log which collection returned results to aid debugging in prod
-        // eslint-disable-next-line no-console
-        console.info('[getAllUsersForNewsEmail] using collection', usedCollection, 'returned', rawUsers.length, 'users');
+    // Log which collection returned results to aid debugging in prod
+    console.info('[getAllUsersForNewsEmail] using collection', usedCollection, 'returned', rawUsers.length, 'users');
 
         return rawUsers
             .filter((user) => user && user.email && user.name)
